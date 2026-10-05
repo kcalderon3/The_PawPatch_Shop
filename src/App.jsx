@@ -223,7 +223,6 @@ export default function App() {
               activeImage={activeImage}
               addToCart={addToCart}
               featuredProducts={featuredProducts}
-              galleryImages={galleryImages}
               petPhoto={petPhoto}
               productError={productError}
               productImage={productImage}
@@ -232,13 +231,21 @@ export default function App() {
               selectedProduct={selectedProduct}
               selectedSize={selectedSize}
               setActiveImage={setActiveImage}
-              setGalleryIndex={setGalleryIndex}
               setPetPhoto={setPetPhoto}
               setProductError={setProductError}
               setQuantity={setQuantity}
               setSelectedColor={setSelectedColor}
               setSelectedSize={setSelectedSize}
               chooseProduct={chooseProduct}
+            />
+          }
+        />
+        <Route
+          path="/gallery"
+          element={
+            <GalleryPage
+              galleryImages={galleryImages}
+              setGalleryIndex={setGalleryIndex}
             />
           }
         />
@@ -418,7 +425,7 @@ function SiteHeader({ cartCount, onCartOpen }) {
         </Link>
         <nav aria-label="Main navigation">
           <NavLink to="/#shop">Shop</NavLink>
-          <NavLink to="/#gallery">Gallery</NavLink>
+          <NavLink to="/gallery">Gallery</NavLink>
           <NavLink to="/faqs">FAQs</NavLink>
         </nav>
         <button className="cart-button" onClick={onCartOpen}>
@@ -435,7 +442,6 @@ function HomePage({
   addToCart,
   chooseProduct,
   featuredProducts,
-  galleryImages,
   petPhoto,
   productError,
   productImage,
@@ -444,7 +450,6 @@ function HomePage({
   selectedProduct,
   selectedSize,
   setActiveImage,
-  setGalleryIndex,
   setPetPhoto,
   setProductError,
   setQuantity,
@@ -581,12 +586,23 @@ function HomePage({
         </div>
       </section>
 
-      <section className="gallery-section" id="gallery">
+    </main>
+  );
+}
+
+function GalleryPage({ galleryImages, setGalleryIndex }) {
+  return (
+    <main id="top" className="gallery-page">
+      <section className="gallery-section gallery-landing">
         <div className="gallery-hero">
-          <h2>
+          <p className="eyebrow">Finished stitches and happy pets</p>
+          <h1>
             ThePawPatch
             <span>Gallery</span>
-          </h2>
+          </h1>
+          <Link className="primary-link" to="/#shop">
+            Shop custom pieces
+          </Link>
         </div>
         <div className="gallery-grid">
           {galleryImages.map((image, index) => (

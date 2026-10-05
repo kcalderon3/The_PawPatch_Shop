@@ -45,7 +45,7 @@ The dev and preview scripts bind to `127.0.0.1`.
 
 ## Repository Structure
 
-- `src/App.jsx` contains route definitions, shared layout, product catalog, gallery data, FAQ data, and storefront interactions.
+- `src/App.jsx` contains route definitions, shared layout, product catalog, gallery page data, FAQ page data, and storefront interactions.
 - `src/main.jsx` mounts the React app inside `BrowserRouter`.
 - `src/styles.css` contains the full visual system and responsive layout.
 - `public/assets/` contains local placeholder product and gallery images.
@@ -54,7 +54,7 @@ The dev and preview scripts bind to `127.0.0.1`.
 ## Implementation Guidelines
 
 - Keep the site as a polished mock-commerce experience unless explicitly asked to add a real checkout provider.
-- Use React Router for new landing pages. Keep global cart/header/footer state in shared layout code so page-level routes can evolve without losing cart behavior.
+- Use React Router for landing pages. Keep global cart/header/footer state in shared layout code so page-level routes can evolve without losing cart behavior.
 - Preserve the visual direction inspired by the reference site: olive/brown backgrounds, pale cream sections, mustard accents, large serif headings, and compact navigation.
 - Keep product data structured with `id`, `name`, `price`, `category`, `images`, `description`, `colors`, `sizes`, and `customizable`.
 - For customizable products, keep pet-photo upload validation before adding to cart.
