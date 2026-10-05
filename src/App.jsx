@@ -223,10 +223,12 @@ export default function App() {
         <Route
           path="/"
           element={
-            <HomePage
-              featuredProducts={featuredProducts}
-            />
+            <HomePage />
           }
+        />
+        <Route
+          path="/shop"
+          element={<ShopPage featuredProducts={featuredProducts} />}
         />
         <Route
           path="/products/:productId"
@@ -434,7 +436,7 @@ function SiteHeader({ cartCount, onCartOpen }) {
           The Paw Patch
         </Link>
         <nav aria-label="Main navigation">
-          <NavLink to="/#shop">Shop</NavLink>
+          <NavLink to="/shop">Shop</NavLink>
           <NavLink to="/gallery">Gallery</NavLink>
           <NavLink to="/faqs">FAQs</NavLink>
         </nav>
@@ -447,7 +449,7 @@ function SiteHeader({ cartCount, onCartOpen }) {
   );
 }
 
-function HomePage({ featuredProducts }) {
+function HomePage() {
   return (
     <main id="top">
       <section className="hero">
@@ -457,36 +459,9 @@ function HomePage({ featuredProducts }) {
             Your new favorite
             <span>sweater!</span>
           </h1>
-          <a className="primary-link" href="#shop">
+          <Link className="primary-link" to="/shop">
             Shop embroidered pieces
-          </a>
-        </div>
-      </section>
-
-      <section className="section section-cream" id="shop">
-        <div className="section-heading">
-          <p className="eyebrow dark">Featured Products</p>
-          <h2>Made for people who talk about their pets a lot.</h2>
-        </div>
-
-        <div className="product-grid">
-          {featuredProducts.map((product) => (
-            <article className="product-card" key={product.id}>
-              <Link
-                className="product-image-button"
-                data-testid={`product-${product.id}`}
-                aria-label={`View ${product.name}`}
-                to={`/products/${product.id}`}
-              >
-                <img src={product.images[0]} alt={product.name} />
-              </Link>
-              <div className="product-card-copy">
-                <p>{product.category}</p>
-                <h3>{product.name}</h3>
-                <span>{formatMoney(product.price)}</span>
-              </div>
-            </article>
-          ))}
+          </Link>
         </div>
       </section>
 
@@ -531,6 +506,39 @@ function HomePage({ featuredProducts }) {
   );
 }
 
+function ShopPage({ featuredProducts }) {
+  return (
+    <main id="top" className="shop-page">
+      <section className="section section-cream" id="shop">
+        <div className="section-heading">
+          <p className="eyebrow dark">Featured Products</p>
+          <h2>Made for people who talk about their pets a lot.</h2>
+        </div>
+
+        <div className="product-grid">
+          {featuredProducts.map((product) => (
+            <article className="product-card" key={product.id}>
+              <Link
+                className="product-image-button"
+                data-testid={`product-${product.id}`}
+                aria-label={`View ${product.name}`}
+                to={`/products/${product.id}`}
+              >
+                <img src={product.images[0]} alt={product.name} />
+              </Link>
+              <div className="product-card-copy">
+                <p>{product.category}</p>
+                <h3>{product.name}</h3>
+                <span>{formatMoney(product.price)}</span>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+    </main>
+  );
+}
+
 function ProductPage({
   activeImage,
   addToCart,
@@ -566,7 +574,7 @@ function ProductPage({
             This patch
             <span>wandered off.</span>
           </h1>
-          <Link className="primary-link" to="/#shop">
+          <Link className="primary-link" to="/shop">
             Return to shop
           </Link>
         </section>
@@ -616,7 +624,7 @@ function ProductPage({
         </div>
 
         <div className="detail-copy">
-          <Link to="/#shop" className="return-link">
+          <Link to="/shop" className="return-link">
             Return to shop
           </Link>
           <p className="eyebrow dark">{product.category}</p>
@@ -696,7 +704,7 @@ function GalleryPage({ galleryImages, setGalleryIndex }) {
             ThePawPatch
             <span>Gallery</span>
           </h1>
-          <Link className="primary-link" to="/#shop">
+          <Link className="primary-link" to="/shop">
             Shop custom pieces
           </Link>
         </div>
@@ -726,7 +734,7 @@ function FaqPage({ faqs, openFaq, setOpenFaq }) {
           FAQs
           <span>before you buy.</span>
         </h1>
-        <Link className="primary-link" to="/#shop">
+        <Link className="primary-link" to="/shop">
           Start your order
         </Link>
       </section>
