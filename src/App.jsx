@@ -223,7 +223,7 @@ export default function App() {
         <Route
           path="/"
           element={
-            <HomePage />
+            <HomePage featuredProducts={featuredProducts} />
           }
         />
         <Route
@@ -449,7 +449,9 @@ function SiteHeader({ cartCount, onCartOpen }) {
   );
 }
 
-function HomePage() {
+function HomePage({ featuredProducts }) {
+  const homeProducts = featuredProducts.slice(0, 3);
+
   return (
     <main id="top">
       <section className="hero">
@@ -462,6 +464,39 @@ function HomePage() {
           <Link className="primary-link" to="/shop">
             Shop embroidered pieces
           </Link>
+        </div>
+      </section>
+
+      <section className="home-featured section-cream" aria-labelledby="home-featured-title">
+        <div className="home-featured-heading">
+          <p className="eyebrow dark">Featured Products</p>
+          <h2 id="home-featured-title">Favorite pieces for favorite pets.</h2>
+          <Link className="shop-all-link" to="/shop">
+            Shop All
+          </Link>
+        </div>
+
+        <div className="home-product-grid">
+          {homeProducts.map((product) => (
+            <article className="home-product-card" key={product.id}>
+              <Link
+                className="home-product-image"
+                to={`/products/${product.id}`}
+                aria-label={`Order ${product.name}`}
+              >
+                <img src={product.images[0]} alt={product.name} />
+              </Link>
+              <div className="home-product-copy">
+                <Link to={`/products/${product.id}`}>
+                  <h3>{product.name}</h3>
+                </Link>
+                <span>{formatMoney(product.price)}</span>
+                <Link className="home-product-button" to={`/products/${product.id}`}>
+                  Shop {product.category}
+                </Link>
+              </div>
+            </article>
+          ))}
         </div>
       </section>
 
