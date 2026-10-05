@@ -289,7 +289,7 @@ h1::after,
   align-items: center;
   justify-content: center;
   min-height: 50px;
-  color: #fff;
+  color: var(--cream-light);
   background: var(--olive);
   border-radius: 12px;
   font-weight: 700;
