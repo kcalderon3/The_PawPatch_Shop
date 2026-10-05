@@ -94,29 +94,54 @@ const galleryImages = [
 
 const faqs = [
   {
+    question: "What is the average turn around time?",
+    answer:
+      "Turn around time is 4-5 weeks. However, if you need an item sooner, feel free to contact us and we will see what we can do!",
+  },
+  {
     question: "What is the sizing for sweaters and hoodies?",
     answer:
-      "Sizing is unisex and relaxed. Choose your usual size for a cozy fit or size up for an oversized look.",
+      "For detailed info about sizing and materials refer to sizing chart on product listings. Generally, they are unisex sizing. If you prefer a more snug fit, we recommend sizing down.",
   },
   {
-    question: "What brand sweaters are used?",
+    question: "What brand of sweaters are used?",
     answer:
-      "This mock storefront uses premium fleece blanks as the standard. Exact brands can be added once production details are finalized.",
+      "We use high quality, mid weight, comfy sweaters and hoodies from Independent Trading Co.",
   },
   {
-    question: "What kind of image should I provide?",
+    question: "What kind of image should I provide for the best quality product?",
     answer:
-      "Upload a clear, well-lit photo where your pet's face is visible. Front-facing photos with minimal blur work best.",
+      "We suggest submitting a quality photo with good lighting. Ideally with your pet facing the camera either head on or at a slight angle where both eyes are visible to the camera.",
   },
   {
-    question: "Will I see the digitized image before embroidery?",
+    question: "Will I get to see the digitalized image before it is embroidered onto the item?",
     answer:
-      "Yes. The final store can include an approval step before stitching. For this mock build, the upload is captured with the cart item.",
+      "Yes! We make sure to verify the design with you before we start stitching to ensure you are happy with your purchase!",
   },
   {
-    question: "Where do you ship?",
+    question: "Where do you ship to?",
     answer:
-      "The original reference mentioned continental U.S. shipping. Shipping rules can be connected to a live checkout later.",
+      "We ship anywhere in the continental US.",
+  },
+  {
+    question: "How do I care for my sweater?",
+    answer:
+      "We recommend either hand washing or machine washing in cold water on the delicate cycle. Use mild detergent and avoid using bleach or other brightening agents.",
+  },
+  {
+    question: "Should I expect shrinkage from my sweater?",
+    answer:
+      "From our experience we have not seen much if any shrinking in the sweaters used. We recommend following the care guidelines provided on the FAQ page to help increase the longevity of your items.",
+  },
+  {
+    question: "Can I cancel my order?",
+    answer:
+      "We are happy to cancel your order if it is done within 24 hrs of ordering.",
+  },
+  {
+    question: "Do you offer returns?",
+    answer:
+      "Due to the nature of our customized products we are unable to offer returns. However, we work with you every step of the way to ensure your satisfaction with your purchase!",
   },
 ];
 
