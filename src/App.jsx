@@ -1,5 +1,12 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
+import {
+  Link,
+  NavLink,
+  Route,
+  Routes,
+  useLocation,
+  useParams,
+} from "react-router-dom";
 
 const products = [
   {
@@ -139,11 +146,9 @@ export default function App() {
     0,
   );
 
-  const productImage = activeImage || selectedProduct.images[0];
-
   const featuredProducts = useMemo(() => products, []);
 
-  function chooseProduct(product) {
+  const resetOrderForProduct = useCallback((product) => {
     setSelectedProduct(product);
     setActiveImage(product.images[0]);
     setSelectedColor(product.colors[0]);
@@ -151,29 +156,28 @@ export default function App() {
     setQuantity(1);
     setPetPhoto(null);
     setProductError("");
-    document.getElementById("product")?.scrollIntoView({ behavior: "smooth" });
-  }
+  }, []);
 
-  function addToCart() {
-    if (!selectedColor || !selectedSize) {
+  function addToCart(product = selectedProduct, color = selectedColor, size = selectedSize) {
+    if (!color || !size) {
       setProductError("Choose a color and size first.");
       return;
     }
 
-    if (selectedProduct.customizable && !petPhoto) {
+    if (product.customizable && !petPhoto) {
       setProductError("Please upload a pet photo before adding this item.");
       return;
     }
 
     const item = {
-      lineId: `${selectedProduct.id}-${selectedColor}-${selectedSize}-${petPhoto?.name || "none"}-${Date.now()}`,
-      productId: selectedProduct.id,
-      name: selectedProduct.name,
-      price: selectedProduct.price,
+      lineId: `${product.id}-${color}-${size}-${petPhoto?.name || "none"}-${Date.now()}`,
+      productId: product.id,
+      name: product.name,
+      price: product.price,
       quantity,
-      color: selectedColor,
-      size: selectedSize,
-      image: selectedProduct.images[0],
+      color,
+      size,
+      image: product.images[0],
       petPhoto: petPhoto
         ? { name: petPhoto.name, size: petPhoto.size, type: petPhoto.type }
         : null,
@@ -220,15 +224,22 @@ export default function App() {
           path="/"
           element={
             <HomePage
+              featuredProducts={featuredProducts}
+            />
+          }
+        />
+        <Route
+          path="/products/:productId"
+          element={
+            <ProductPage
               activeImage={activeImage}
               addToCart={addToCart}
-              featuredProducts={featuredProducts}
               petPhoto={petPhoto}
               productError={productError}
-              productImage={productImage}
+              products={products}
               quantity={quantity}
+              resetOrderForProduct={resetOrderForProduct}
               selectedColor={selectedColor}
-              selectedProduct={selectedProduct}
               selectedSize={selectedSize}
               setActiveImage={setActiveImage}
               setPetPhoto={setPetPhoto}
@@ -236,7 +247,6 @@ export default function App() {
               setQuantity={setQuantity}
               setSelectedColor={setSelectedColor}
               setSelectedSize={setSelectedSize}
-              chooseProduct={chooseProduct}
             />
           }
         />
@@ -437,25 +447,7 @@ function SiteHeader({ cartCount, onCartOpen }) {
   );
 }
 
-function HomePage({
-  activeImage,
-  addToCart,
-  chooseProduct,
-  featuredProducts,
-  petPhoto,
-  productError,
-  productImage,
-  quantity,
-  selectedColor,
-  selectedProduct,
-  selectedSize,
-  setActiveImage,
-  setPetPhoto,
-  setProductError,
-  setQuantity,
-  setSelectedColor,
-  setSelectedSize,
-}) {
+function HomePage({ featuredProducts }) {
   return (
     <main id="top">
       <section className="hero">
@@ -480,14 +472,14 @@ function HomePage({
         <div className="product-grid">
           {featuredProducts.map((product) => (
             <article className="product-card" key={product.id}>
-              <button
+              <Link
                 className="product-image-button"
                 data-testid={`product-${product.id}`}
-                onClick={() => chooseProduct(product)}
                 aria-label={`View ${product.name}`}
+                to={`/products/${product.id}`}
               >
                 <img src={product.images[0]} alt={product.name} />
-              </button>
+              </Link>
               <div className="product-card-copy">
                 <p>{product.category}</p>
                 <h3>{product.name}</h3>
@@ -497,11 +489,78 @@ function HomePage({
           ))}
         </div>
       </section>
+    </main>
+  );
+}
+
+function ProductPage({
+  activeImage,
+  addToCart,
+  petPhoto,
+  productError,
+  products,
+  quantity,
+  resetOrderForProduct,
+  selectedColor,
+  selectedSize,
+  setActiveImage,
+  setPetPhoto,
+  setProductError,
+  setQuantity,
+  setSelectedColor,
+  setSelectedSize,
+}) {
+  const { productId } = useParams();
+  const product = products.find((item) => item.id === productId);
+
+  useEffect(() => {
+    if (product) {
+      resetOrderForProduct(product);
+    }
+  }, [product, resetOrderForProduct]);
+
+  if (!product) {
+    return (
+      <main id="top" className="product-page">
+        <section className="section section-cream product-not-found">
+          <p className="eyebrow dark">Product not found</p>
+          <h1>
+            This patch
+            <span>wandered off.</span>
+          </h1>
+          <Link className="primary-link" to="/#shop">
+            Return to shop
+          </Link>
+        </section>
+      </main>
+    );
+  }
+
+  const productImage =
+    activeImage && product.images.includes(activeImage)
+      ? activeImage
+      : product.images[0];
+  const currentColor = product.colors.includes(selectedColor)
+    ? selectedColor
+    : product.colors[0];
+  const currentSize = product.sizes.includes(selectedSize)
+    ? selectedSize
+    : product.sizes[Math.min(1, product.sizes.length - 1)];
+
+  return (
+    <main id="top" className="product-page">
+      <section className="product-page-hero">
+        <p className="eyebrow">Custom embroidered order</p>
+        <h1>
+          {product.name}
+          <span>{formatMoney(product.price)}</span>
+        </h1>
+      </section>
 
       <section className="product-detail" id="product">
         <div className="detail-gallery">
           <div className="thumb-list" aria-label="Product images">
-            {selectedProduct.images.map((image) => (
+            {product.images.map((image) => (
               <button
                 key={image}
                 className={image === productImage ? "thumb active" : "thumb"}
@@ -514,26 +573,26 @@ function HomePage({
           <img
             className="detail-image"
             src={productImage}
-            alt={selectedProduct.name}
+            alt={product.name}
           />
         </div>
 
         <div className="detail-copy">
-          <a href="#shop" className="return-link">
+          <Link to="/#shop" className="return-link">
             Return to shop
-          </a>
-          <p className="eyebrow dark">{selectedProduct.category}</p>
-          <h2>{selectedProduct.name}</h2>
-          <p className="price">{formatMoney(selectedProduct.price)}</p>
-          <p className="description">{selectedProduct.description}</p>
+          </Link>
+          <p className="eyebrow dark">{product.category}</p>
+          <h2>{product.name}</h2>
+          <p className="price">{formatMoney(product.price)}</p>
+          <p className="description">{product.description}</p>
 
           <label>
             Color
             <select
-              value={selectedColor}
+              value={currentColor}
               onChange={(event) => setSelectedColor(event.target.value)}
             >
-              {selectedProduct.colors.map((color) => (
+              {product.colors.map((color) => (
                 <option key={color}>{color}</option>
               ))}
             </select>
@@ -542,16 +601,16 @@ function HomePage({
           <label>
             Size
             <select
-              value={selectedSize}
+              value={currentSize}
               onChange={(event) => setSelectedSize(event.target.value)}
             >
-              {selectedProduct.sizes.map((size) => (
+              {product.sizes.map((size) => (
                 <option key={size}>{size}</option>
               ))}
             </select>
           </label>
 
-          {selectedProduct.customizable && (
+          {product.customizable && (
             <label className="upload-box">
               Pet photo
               <input
@@ -577,7 +636,7 @@ function HomePage({
             <button
               className="primary-button"
               data-testid="add-to-cart"
-              onClick={addToCart}
+              onClick={() => addToCart(product, currentColor, currentSize)}
             >
               Add To Cart
             </button>
@@ -585,7 +644,6 @@ function HomePage({
           {productError && <p className="form-error">{productError}</p>}
         </div>
       </section>
-
     </main>
   );
 }

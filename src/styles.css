@@ -153,6 +153,18 @@ nav a:hover {
     linear-gradient(180deg, var(--olive) 0%, var(--olive) 82%, var(--white) 82%);
 }
 
+.product-page-hero {
+  min-height: 360px;
+  display: grid;
+  place-items: center;
+  padding: 64px 24px 78px;
+  color: var(--cream);
+  text-align: center;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(255, 243, 199, 0.13), transparent 24%),
+    linear-gradient(180deg, var(--olive) 0%, var(--olive) 82%, var(--cream-light) 82%);
+}
+
 .hero-copy {
   max-width: 760px;
   text-align: center;
@@ -198,7 +210,8 @@ h1 span {
   margin-bottom: 34px;
 }
 
-.faq-page-hero h1 span {
+.faq-page-hero h1 span,
+.product-page-hero h1 span {
   font-size: 0.62em;
 }
 
@@ -294,6 +307,7 @@ h1::after,
 }
 
 .product-image-button {
+  display: block;
   width: 100%;
   padding: 0;
   overflow: hidden;
@@ -301,6 +315,20 @@ h1::after,
   border-radius: 4px;
   background: transparent;
   aspect-ratio: 1 / 0.82;
+}
+
+.product-not-found {
+  min-height: 520px;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  gap: 22px;
+  text-align: center;
+}
+
+.product-not-found h1 {
+  color: var(--olive);
+  font-size: clamp(3rem, 8vw, 6rem);
 }
 
 .product-image-button img {

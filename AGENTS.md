@@ -45,7 +45,7 @@ The dev and preview scripts bind to `127.0.0.1`.
 
 ## Repository Structure
 
-- `src/App.jsx` contains route definitions, shared layout, product catalog, gallery page data, FAQ page data, and storefront interactions.
+- `src/App.jsx` contains route definitions, shared layout, product catalog, product order pages, gallery page data, FAQ page data, and storefront interactions.
 - `src/main.jsx` mounts the React app inside `BrowserRouter`.
 - `src/styles.css` contains the full visual system and responsive layout.
 - `public/assets/` contains local placeholder product and gallery images.
@@ -74,7 +74,7 @@ pnpm run build
 
 For UI changes, also manually verify:
 
-- Product card selection scrolls to the product detail section.
+- Product card selection opens the matching `/products/:productId` order page.
 - Customizable products require a pet photo before adding to cart.
 - Gift card or non-customizable products can be added without an upload.
 - Cart quantity changes and subtotal update correctly.
