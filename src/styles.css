@@ -141,6 +141,18 @@ nav a:hover {
     linear-gradient(180deg, #5b5232 0%, #5b5232 80%, var(--cream) 80%);
 }
 
+.faq-page-hero {
+  min-height: 430px;
+  display: grid;
+  place-items: center;
+  padding: 70px 24px 86px;
+  color: var(--cream);
+  text-align: center;
+  background:
+    radial-gradient(circle at 76% 18%, rgba(237, 197, 103, 0.15), transparent 25%),
+    linear-gradient(180deg, var(--olive) 0%, var(--olive) 82%, var(--white) 82%);
+}
+
 .hero-copy {
   max-width: 760px;
   text-align: center;
@@ -180,6 +192,14 @@ h1 {
 
 h1 span {
   display: block;
+}
+
+.faq-page-hero h1 {
+  margin-bottom: 34px;
+}
+
+.faq-page-hero h1 span {
+  font-size: 0.62em;
 }
 
 h1::after,
@@ -535,6 +555,10 @@ input[type="email"] {
   max-width: 1140px;
   margin: 0 auto;
   background: var(--white);
+}
+
+.faq-landing {
+  padding-top: 86px;
 }
 
 .faq-images {

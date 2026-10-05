@@ -1,4 +1,5 @@
-import React, { useMemo, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
+import { Link, NavLink, Route, Routes, useLocation } from "react-router-dom";
 
 const products = [
   {
@@ -211,200 +212,47 @@ export default function App() {
 
   return (
     <div className="site-shell">
-      <header className="topbar">
-        <p className="shipping-note">FREE shipping on all orders | Continental US</p>
-        <div className="nav-row">
-          <a className="brand" href="#top" aria-label="The Paw Patch home">
-            The Paw Patch
-          </a>
-          <nav aria-label="Main navigation">
-            <a href="#shop">Shop</a>
-            <a href="#gallery">Gallery</a>
-            <a href="#faqs">FAQs</a>
-          </nav>
-          <button className="cart-button" onClick={() => setCartOpen(true)}>
-            <span aria-hidden="true">Bag</span>
-            <span className="cart-count">{cartCount}</span>
-          </button>
-        </div>
-      </header>
+      <ScrollToHash />
+      <SiteHeader cartCount={cartCount} onCartOpen={() => setCartOpen(true)} />
 
-      <main id="top">
-        <section className="hero">
-          <div className="hero-copy">
-            <p className="eyebrow">Custom pet portrait embroidery</p>
-            <h1>
-              Your new favorite
-              <span>sweater!</span>
-            </h1>
-            <a className="primary-link" href="#shop">
-              Shop embroidered pieces
-            </a>
-          </div>
-        </section>
-
-        <section className="section section-cream" id="shop">
-          <div className="section-heading">
-            <p className="eyebrow dark">Featured Products</p>
-            <h2>Made for people who talk about their pets a lot.</h2>
-          </div>
-
-          <div className="product-grid">
-            {featuredProducts.map((product) => (
-              <article className="product-card" key={product.id}>
-                <button
-                  className="product-image-button"
-                  data-testid={`product-${product.id}`}
-                  onClick={() => chooseProduct(product)}
-                  aria-label={`View ${product.name}`}
-                >
-                  <img src={product.images[0]} alt={product.name} />
-                </button>
-                <div className="product-card-copy">
-                  <p>{product.category}</p>
-                  <h3>{product.name}</h3>
-                  <span>{formatMoney(product.price)}</span>
-                </div>
-              </article>
-            ))}
-          </div>
-        </section>
-
-        <section className="product-detail" id="product">
-          <div className="detail-gallery">
-            <div className="thumb-list" aria-label="Product images">
-              {selectedProduct.images.map((image) => (
-                <button
-                  key={image}
-                  className={image === productImage ? "thumb active" : "thumb"}
-                  onClick={() => setActiveImage(image)}
-                >
-                  <img src={image} alt="" />
-                </button>
-              ))}
-            </div>
-            <img
-              className="detail-image"
-              src={productImage}
-              alt={selectedProduct.name}
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <HomePage
+              activeImage={activeImage}
+              addToCart={addToCart}
+              featuredProducts={featuredProducts}
+              galleryImages={galleryImages}
+              petPhoto={petPhoto}
+              productError={productError}
+              productImage={productImage}
+              quantity={quantity}
+              selectedColor={selectedColor}
+              selectedProduct={selectedProduct}
+              selectedSize={selectedSize}
+              setActiveImage={setActiveImage}
+              setGalleryIndex={setGalleryIndex}
+              setPetPhoto={setPetPhoto}
+              setProductError={setProductError}
+              setQuantity={setQuantity}
+              setSelectedColor={setSelectedColor}
+              setSelectedSize={setSelectedSize}
+              chooseProduct={chooseProduct}
             />
-          </div>
-
-          <div className="detail-copy">
-            <a href="#shop" className="return-link">
-              Return to shop
-            </a>
-            <p className="eyebrow dark">{selectedProduct.category}</p>
-            <h2>{selectedProduct.name}</h2>
-            <p className="price">{formatMoney(selectedProduct.price)}</p>
-            <p className="description">{selectedProduct.description}</p>
-
-            <label>
-              Color
-              <select
-                value={selectedColor}
-                onChange={(event) => setSelectedColor(event.target.value)}
-              >
-                {selectedProduct.colors.map((color) => (
-                  <option key={color}>{color}</option>
-                ))}
-              </select>
-            </label>
-
-            <label>
-              Size
-              <select
-                value={selectedSize}
-                onChange={(event) => setSelectedSize(event.target.value)}
-              >
-                {selectedProduct.sizes.map((size) => (
-                  <option key={size}>{size}</option>
-                ))}
-              </select>
-            </label>
-
-            {selectedProduct.customizable && (
-              <label className="upload-box">
-                Pet photo
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={(event) => {
-                    setPetPhoto(event.target.files?.[0] || null);
-                    setProductError("");
-                  }}
-                />
-                <span>{petPhoto ? petPhoto.name : "Upload a clear face photo"}</span>
-              </label>
-            )}
-
-            <div className="purchase-row">
-              <div className="quantity-stepper" aria-label="Quantity">
-                <button onClick={() => setQuantity(Math.max(1, quantity - 1))}>
-                  -
-                </button>
-                <span>{quantity}</span>
-                <button onClick={() => setQuantity(quantity + 1)}>+</button>
-              </div>
-              <button
-                className="primary-button"
-                data-testid="add-to-cart"
-                onClick={addToCart}
-              >
-                Add To Cart
-              </button>
-            </div>
-            {productError && <p className="form-error">{productError}</p>}
-          </div>
-        </section>
-
-        <section className="gallery-section" id="gallery">
-          <div className="gallery-hero">
-            <h2>
-              ThePawPatch
-              <span>Gallery</span>
-            </h2>
-          </div>
-          <div className="gallery-grid">
-            {galleryImages.map((image, index) => (
-              <button
-                className="gallery-tile"
-                data-testid={`gallery-${index}`}
-                key={image}
-                onClick={() => setGalleryIndex(index)}
-              >
-                <img src={image} alt={`Custom embroidery gallery ${index + 1}`} />
-              </button>
-            ))}
-          </div>
-        </section>
-
-        <section className="faq-section" id="faqs">
-          <div className="faq-images" aria-hidden="true">
-            <img src="/assets/gallery-3.png" alt="" />
-            <img src="/assets/patch-founder.png" alt="" />
-            <img src="/assets/gallery-1.png" alt="" />
-          </div>
-          <div className="faq-copy">
-            <p className="eyebrow dark">Details</p>
-            <h2>What to know before ordering.</h2>
-            <div className="accordion">
-              {faqs.map((faq, index) => (
-                <div className="faq-item" key={faq.question}>
-                  <button
-                    data-testid={`faq-${index}`}
-                    onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
-                  >
-                    {faq.question}
-                    <span>{openFaq === index ? "-" : "+"}</span>
-                  </button>
-                  {openFaq === index && <p>{faq.answer}</p>}
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      </main>
+          }
+        />
+        <Route
+          path="/faqs"
+          element={
+            <FaqPage
+              faqs={faqs}
+              openFaq={openFaq}
+              setOpenFaq={setOpenFaq}
+            />
+          }
+        />
+      </Routes>
 
       <footer className="footer">
         <div className="footer-strip">
@@ -540,5 +388,262 @@ export default function App() {
         </div>
       )}
     </div>
+  );
+}
+
+function ScrollToHash() {
+  const { hash, pathname } = useLocation();
+
+  useEffect(() => {
+    window.requestAnimationFrame(() => {
+      if (hash) {
+        document.querySelector(hash)?.scrollIntoView({ behavior: "smooth" });
+        return;
+      }
+
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }, [hash, pathname]);
+
+  return null;
+}
+
+function SiteHeader({ cartCount, onCartOpen }) {
+  return (
+    <header className="topbar">
+      <p className="shipping-note">FREE shipping on all orders | Continental US</p>
+      <div className="nav-row">
+        <Link className="brand" to="/" aria-label="The Paw Patch home">
+          The Paw Patch
+        </Link>
+        <nav aria-label="Main navigation">
+          <NavLink to="/#shop">Shop</NavLink>
+          <NavLink to="/#gallery">Gallery</NavLink>
+          <NavLink to="/faqs">FAQs</NavLink>
+        </nav>
+        <button className="cart-button" onClick={onCartOpen}>
+          <span aria-hidden="true">Bag</span>
+          <span className="cart-count">{cartCount}</span>
+        </button>
+      </div>
+    </header>
+  );
+}
+
+function HomePage({
+  activeImage,
+  addToCart,
+  chooseProduct,
+  featuredProducts,
+  galleryImages,
+  petPhoto,
+  productError,
+  productImage,
+  quantity,
+  selectedColor,
+  selectedProduct,
+  selectedSize,
+  setActiveImage,
+  setGalleryIndex,
+  setPetPhoto,
+  setProductError,
+  setQuantity,
+  setSelectedColor,
+  setSelectedSize,
+}) {
+  return (
+    <main id="top">
+      <section className="hero">
+        <div className="hero-copy">
+          <p className="eyebrow">Custom pet portrait embroidery</p>
+          <h1>
+            Your new favorite
+            <span>sweater!</span>
+          </h1>
+          <a className="primary-link" href="#shop">
+            Shop embroidered pieces
+          </a>
+        </div>
+      </section>
+
+      <section className="section section-cream" id="shop">
+        <div className="section-heading">
+          <p className="eyebrow dark">Featured Products</p>
+          <h2>Made for people who talk about their pets a lot.</h2>
+        </div>
+
+        <div className="product-grid">
+          {featuredProducts.map((product) => (
+            <article className="product-card" key={product.id}>
+              <button
+                className="product-image-button"
+                data-testid={`product-${product.id}`}
+                onClick={() => chooseProduct(product)}
+                aria-label={`View ${product.name}`}
+              >
+                <img src={product.images[0]} alt={product.name} />
+              </button>
+              <div className="product-card-copy">
+                <p>{product.category}</p>
+                <h3>{product.name}</h3>
+                <span>{formatMoney(product.price)}</span>
+              </div>
+            </article>
+          ))}
+        </div>
+      </section>
+
+      <section className="product-detail" id="product">
+        <div className="detail-gallery">
+          <div className="thumb-list" aria-label="Product images">
+            {selectedProduct.images.map((image) => (
+              <button
+                key={image}
+                className={image === productImage ? "thumb active" : "thumb"}
+                onClick={() => setActiveImage(image)}
+              >
+                <img src={image} alt="" />
+              </button>
+            ))}
+          </div>
+          <img
+            className="detail-image"
+            src={productImage}
+            alt={selectedProduct.name}
+          />
+        </div>
+
+        <div className="detail-copy">
+          <a href="#shop" className="return-link">
+            Return to shop
+          </a>
+          <p className="eyebrow dark">{selectedProduct.category}</p>
+          <h2>{selectedProduct.name}</h2>
+          <p className="price">{formatMoney(selectedProduct.price)}</p>
+          <p className="description">{selectedProduct.description}</p>
+
+          <label>
+            Color
+            <select
+              value={selectedColor}
+              onChange={(event) => setSelectedColor(event.target.value)}
+            >
+              {selectedProduct.colors.map((color) => (
+                <option key={color}>{color}</option>
+              ))}
+            </select>
+          </label>
+
+          <label>
+            Size
+            <select
+              value={selectedSize}
+              onChange={(event) => setSelectedSize(event.target.value)}
+            >
+              {selectedProduct.sizes.map((size) => (
+                <option key={size}>{size}</option>
+              ))}
+            </select>
+          </label>
+
+          {selectedProduct.customizable && (
+            <label className="upload-box">
+              Pet photo
+              <input
+                type="file"
+                accept="image/*"
+                onChange={(event) => {
+                  setPetPhoto(event.target.files?.[0] || null);
+                  setProductError("");
+                }}
+              />
+              <span>{petPhoto ? petPhoto.name : "Upload a clear face photo"}</span>
+            </label>
+          )}
+
+          <div className="purchase-row">
+            <div className="quantity-stepper" aria-label="Quantity">
+              <button onClick={() => setQuantity(Math.max(1, quantity - 1))}>
+                -
+              </button>
+              <span>{quantity}</span>
+              <button onClick={() => setQuantity(quantity + 1)}>+</button>
+            </div>
+            <button
+              className="primary-button"
+              data-testid="add-to-cart"
+              onClick={addToCart}
+            >
+              Add To Cart
+            </button>
+          </div>
+          {productError && <p className="form-error">{productError}</p>}
+        </div>
+      </section>
+
+      <section className="gallery-section" id="gallery">
+        <div className="gallery-hero">
+          <h2>
+            ThePawPatch
+            <span>Gallery</span>
+          </h2>
+        </div>
+        <div className="gallery-grid">
+          {galleryImages.map((image, index) => (
+            <button
+              className="gallery-tile"
+              data-testid={`gallery-${index}`}
+              key={image}
+              onClick={() => setGalleryIndex(index)}
+            >
+              <img src={image} alt={`Custom embroidery gallery ${index + 1}`} />
+            </button>
+          ))}
+        </div>
+      </section>
+    </main>
+  );
+}
+
+function FaqPage({ faqs, openFaq, setOpenFaq }) {
+  return (
+    <main id="top" className="faq-page">
+      <section className="faq-page-hero">
+        <p className="eyebrow">Ordering details</p>
+        <h1>
+          FAQs
+          <span>before you buy.</span>
+        </h1>
+        <Link className="primary-link" to="/#shop">
+          Start your order
+        </Link>
+      </section>
+
+      <section className="faq-section faq-landing">
+        <div className="faq-images" aria-hidden="true">
+          <img src="/assets/gallery-3.png" alt="" />
+          <img src="/assets/patch-founder.png" alt="" />
+          <img src="/assets/gallery-1.png" alt="" />
+        </div>
+        <div className="faq-copy">
+          <p className="eyebrow dark">Details</p>
+          <h2>What to know before ordering.</h2>
+          <div className="accordion">
+            {faqs.map((faq, index) => (
+              <div className="faq-item" key={faq.question}>
+                <button
+                  data-testid={`faq-${index}`}
+                  onClick={() => setOpenFaq(openFaq === index ? -1 : index)}
+                >
+                  {faq.question}
+                  <span>{openFaq === index ? "-" : "+"}</span>
+                </button>
+                {openFaq === index && <p>{faq.answer}</p>}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    </main>
   );
 }

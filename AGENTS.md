@@ -4,11 +4,12 @@ Guidance for AI coding agents working in this repository.
 
 ## Project Overview
 
-This is a single-page e-commerce mock storefront for The Paw Patch, a custom pet portrait embroidery shop. It is built with Vite, React, and plain CSS. The current checkout is intentionally mocked: products, variants, pet-photo upload metadata, cart state, and checkout confirmation are handled client-side only.
+This is a routed e-commerce mock storefront for The Paw Patch, a custom pet portrait embroidery shop. It is built with Vite, React, React Router, and plain CSS. The current checkout is intentionally mocked: products, variants, pet-photo upload metadata, cart state, and checkout confirmation are handled client-side only.
 
 ## Tech Stack
 
 - React 19
+- React Router
 - Vite 7
 - pnpm
 - Plain CSS in `src/styles.css`
@@ -44,8 +45,8 @@ The dev and preview scripts bind to `127.0.0.1`.
 
 ## Repository Structure
 
-- `src/App.jsx` contains the product catalog, gallery data, FAQ data, and all storefront interactions.
-- `src/main.jsx` mounts the React app.
+- `src/App.jsx` contains route definitions, shared layout, product catalog, gallery data, FAQ data, and storefront interactions.
+- `src/main.jsx` mounts the React app inside `BrowserRouter`.
 - `src/styles.css` contains the full visual system and responsive layout.
 - `public/assets/` contains local placeholder product and gallery images.
 - `index.html` is the Vite entry document.
@@ -53,6 +54,7 @@ The dev and preview scripts bind to `127.0.0.1`.
 ## Implementation Guidelines
 
 - Keep the site as a polished mock-commerce experience unless explicitly asked to add a real checkout provider.
+- Use React Router for new landing pages. Keep global cart/header/footer state in shared layout code so page-level routes can evolve without losing cart behavior.
 - Preserve the visual direction inspired by the reference site: olive/brown backgrounds, pale cream sections, mustard accents, large serif headings, and compact navigation.
 - Keep product data structured with `id`, `name`, `price`, `category`, `images`, `description`, `colors`, `sizes`, and `customizable`.
 - For customizable products, keep pet-photo upload validation before adding to cart.
