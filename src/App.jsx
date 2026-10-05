@@ -489,6 +489,44 @@ function HomePage({ featuredProducts }) {
           ))}
         </div>
       </section>
+
+      <section className="about-section" id="about">
+        <div className="about-inner">
+          <h2>Custom embroidered products stitched with love.</h2>
+
+          <div className="about-photo about-photo-primary" aria-label="Photo placeholder">
+            <span>Photo placeholder</span>
+          </div>
+
+          <div className="about-photo about-photo-secondary" aria-label="Photo placeholder">
+            <span>Photo placeholder</span>
+          </div>
+
+          <div className="about-copy">
+            <p>
+              Hi! I'm Kharisma. I'm a dog lover living in San Francisco, CA. I
+              have two pups of my own, a rescued Formosan Mountain Dog, and a
+              Doberman Pinscher.
+            </p>
+            <p>
+              Originally from Los Angeles, I'm a Latina with a degree in
+              Software Engineering. I left my tech job in 2022 and focused on
+              training my Doberman puppy. Now a days I spend my time living,
+              breathing, and sleeping 'dogs'! I walk and train dogs and have
+              decided to take the leap of faith to pursue my passion project -
+              creating The Paw Patch.
+            </p>
+            <p>
+              I strive to provide pet lovers all over the country with unique
+              and quality embroidered products.
+            </p>
+            <p>
+              I look forward to working with you to capture the beauty of your
+              loved ones in embroidery form!
+            </p>
+          </div>
+        </div>
+      </section>
     </main>
   );
 }
