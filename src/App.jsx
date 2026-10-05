@@ -14,7 +14,7 @@ const products = [
     name: "Embroidered Hoodie",
     price: 110,
     category: "Hoodies",
-    images: ["/assets/hoodie-pink.png", "/assets/gallery-1.png"],
+    images: ["/assets/embroidered-hoodie.jpeg", "/assets/gallery-1.png"],
     description:
       "A soft fleece hoodie stitched with a custom portrait of your favorite pet.",
     colors: ["Blush", "Cream", "Sage", "Charcoal"],
@@ -26,7 +26,7 @@ const products = [
     name: "Embroidered Crewneck",
     price: 100,
     category: "Crewnecks",
-    images: ["/assets/crewneck-blue.png", "/assets/gallery-2.png"],
+    images: ["/assets/embroidered-crewneck.jpg", "/assets/gallery-2.png"],
     description:
       "A classic crewneck with portrait embroidery placed over the heart.",
     colors: ["Sky", "Sand", "Ivory", "Olive"],
@@ -38,7 +38,7 @@ const products = [
     name: "Embroidered Sweatsuit Set",
     price: 145,
     category: "Sets",
-    images: ["/assets/sweatsuit-cream.png", "/assets/gallery-3.png"],
+    images: ["/assets/embroidered-sweatsuit-set.jpg", "/assets/gallery-3.png"],
     description:
       "A matching hoodie and jogger set with a sweet custom pet portrait detail.",
     colors: ["Buttercream", "Heather", "Rose", "Forest"],
@@ -50,7 +50,7 @@ const products = [
     name: "Custom Portrait Crew",
     price: 98,
     category: "Crewnecks",
-    images: ["/assets/crewneck-tan.png", "/assets/gallery-4.png"],
+    images: ["/assets/custom-portrait-crew.jpg", "/assets/gallery-4.png"],
     description:
       "Warm neutral fleece finished with a detailed thread portrait.",
     colors: ["Oat", "Mocha", "Pine", "White"],
@@ -62,7 +62,7 @@ const products = [
     name: "Pet Patch Hoodie",
     price: 115,
     category: "Hoodies",
-    images: ["/assets/hoodie-mint.png", "/assets/gallery-5.png"],
+    images: ["/assets/pet-patch-hoodie.jpg", "/assets/gallery-5.png"],
     description:
       "A relaxed hoodie designed for everyday wear and tiny embroidered tributes.",
     colors: ["Mint", "Petal", "Cream", "Black"],
@@ -74,7 +74,7 @@ const products = [
     name: "Custom Embroidery Gift Card",
     price: 50,
     category: "Gifts",
-    images: ["/assets/gift-card.png"],
+    images: ["/assets/custom-embroidery-gift-card.jpg"],
     description:
       "Give them a head start on their own custom pet portrait piece.",
     colors: ["Digital"],
