@@ -305,9 +305,13 @@ export default function App() {
           ))}
         </div>
         <div className="footer-main">
-          <img src="/assets/patch-founder.png" alt="" />
+          <img
+            className="footer-logo"
+            src="/assets/footer-paw-patch-logo.png"
+            alt="The Paw Patch pet embroidery logo"
+          />
           <form onSubmit={handleSubscribe}>
-            <h2>Subscribe</h2>
+            <h2 className="footer-subscribe-title">Subscribe</h2>
             <p>Be the first to hear about sales and new product releases.</p>
             <input
               type="email"
@@ -529,12 +533,18 @@ function HomePage({ featuredProducts }) {
         <div className="about-inner">
           <h2>Custom embroidered products stitched with love.</h2>
 
-          <div className="about-photo about-photo-primary" aria-label="Photo placeholder">
-            <span>Photo placeholder</span>
+          <div className="about-photo about-photo-primary">
+            <img
+              src="/assets/about-kharisma-doberman.jpg"
+              alt="Kharisma sitting outside with her Doberman"
+            />
           </div>
 
-          <div className="about-photo about-photo-secondary" aria-label="Photo placeholder">
-            <span>Photo placeholder</span>
+          <div className="about-photo about-photo-secondary">
+            <img
+              src="/assets/about-kharisma-pup.jpg"
+              alt="Kharisma holding her dog in a matching bandana"
+            />
           </div>
 
           <div className="about-copy">

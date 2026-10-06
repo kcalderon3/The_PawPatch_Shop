@@ -131,14 +131,14 @@ nav a:hover {
 }
 
 .hero {
-  min-height: 520px;
+  min-height: 680px;
   display: grid;
   place-items: center;
-  padding: 70px 24px 96px;
+  padding: 98px 24px 112px;
   color: var(--cream);
   background:
-    radial-gradient(circle at 24% 20%, rgba(255, 243, 199, 0.12), transparent 24%),
-    linear-gradient(180deg, #5b5232 0%, #5b5232 80%, var(--cream) 80%);
+    linear-gradient(rgba(64, 57, 35, 0.45), rgba(64, 57, 35, 0.42)),
+    url("/assets/home-hero-sweaters.jpg") center / cover no-repeat;
 }
 
 .faq-page-hero {
@@ -435,24 +435,16 @@ h1::after,
   display: grid;
   place-items: center;
   min-height: 320px;
-  color: rgba(91, 82, 50, 0.72);
-  background:
-    linear-gradient(135deg, rgba(255, 253, 243, 0.72), rgba(237, 197, 103, 0.16)),
-    repeating-linear-gradient(45deg, rgba(91, 82, 50, 0.08) 0 2px, transparent 2px 18px);
+  background: #fff7d6;
   border: 1px solid rgba(91, 82, 50, 0.18);
   box-shadow: 0 22px 42px rgba(64, 57, 35, 0.13);
   overflow: hidden;
 }
 
-.about-photo span {
-  padding: 10px 16px;
-  background: rgba(255, 243, 199, 0.84);
-  border: 1px solid rgba(91, 82, 50, 0.22);
-  border-radius: 999px;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
+.about-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .about-photo-primary {
@@ -889,10 +881,11 @@ input[type="email"] {
   padding: 56px 28px 70px;
 }
 
-.footer-main > img {
-  width: 170px;
+.footer-logo {
+  width: min(190px, 100%);
   aspect-ratio: 1;
-  object-fit: cover;
+  object-fit: contain;
+  background: var(--cream);
   border-radius: 50%;
 }
 
@@ -900,7 +893,17 @@ input[type="email"] {
   text-align: center;
 }
 
+.footer-subscribe-title {
+  margin: 0 0 12px;
+  color: var(--cream);
+  font-family: Georgia, "Times New Roman", serif;
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 400;
+  line-height: 1;
+}
+
 .footer p {
+  margin: 0;
   color: rgba(255, 243, 199, 0.78);
   line-height: 1.5;
 }
@@ -1208,7 +1211,7 @@ input[type="email"] {
     text-align: center;
   }
 
-  .footer-main > img {
+  .footer-logo {
     justify-self: center;
   }
 
