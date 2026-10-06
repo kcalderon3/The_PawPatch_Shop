@@ -817,6 +817,7 @@ input[type="email"] {
 .faq-images img:nth-child(2) {
   justify-self: end;
   width: 230px;
+  object-position: center 38%;
 }
 
 .accordion {

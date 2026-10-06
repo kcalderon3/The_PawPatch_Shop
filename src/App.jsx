@@ -811,9 +811,9 @@ function FaqPage({ faqs, openFaq, setOpenFaq }) {
 
       <section className="faq-section faq-landing">
         <div className="faq-images" aria-hidden="true">
-          <img src="/assets/gallery-3.png" alt="" />
-          <img src="/assets/patch-founder.png" alt="" />
-          <img src="/assets/gallery-1.png" alt="" />
+          <img src="/assets/faq-embroidered-frenchies.jpg" alt="" />
+          <img src="/assets/faq-customer-cat.jpg" alt="" />
+          <img src="/assets/faq-embroidered-spaniel.jpg" alt="" />
         </div>
         <div className="faq-copy">
           <p className="eyebrow dark">Details</p>
