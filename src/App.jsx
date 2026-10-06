@@ -46,10 +46,10 @@ const products = [
     customizable: true,
   },
   {
-    id: "tan-crewneck",
-    name: "Custom Portrait Crew",
-    price: 98,
-    category: "Crewnecks",
+    id: "pet-name-add-on",
+    name: "Pet Name Add-On",
+    price: 10,
+    category: "Add-Ons",
     images: ["/assets/custom-portrait-crew.jpg", "/assets/gallery-4.png"],
     description:
       "Warm neutral fleece finished with a detailed thread portrait.",
@@ -58,11 +58,11 @@ const products = [
     customizable: true,
   },
   {
-    id: "mint-hoodie",
-    name: "Pet Patch Hoodie",
-    price: 115,
-    category: "Hoodies",
-    images: ["/assets/pet-patch-hoodie.jpg", "/assets/gallery-5.png"],
+    id: "pet-face-add-on",
+    name: "Additional Pet Face Add-On",
+    price: 30,
+    category: "Add-Ons",
+    images: ["/assets/faq-embroidered-frenchies.jpg", "/assets/gallery-5.png"],
     description:
       "A relaxed hoodie designed for everyday wear and tiny embroidered tributes.",
     colors: ["Mint", "Petal", "Cream", "Black"],
@@ -71,14 +71,14 @@ const products = [
   },
   {
     id: "gift-card",
-    name: "Custom Embroidery Gift Card",
-    price: 50,
+    name: "ThePawPatch Gift Card",
+    price: 25,
     category: "Gifts",
     images: ["/assets/custom-embroidery-gift-card.jpg"],
     description:
       "Give them a head start on their own custom pet portrait piece.",
     colors: ["Digital"],
-    sizes: ["$50", "$100", "$150"],
+    sizes: ["$25", "$50", "$100", "$150"],
     customizable: false,
   },
 ];
@@ -491,7 +491,7 @@ function HomePage({ featuredProducts }) {
             <span>sweater!</span>
           </h1>
           <Link className="primary-link" to="/shop">
-            Shop embroidered pieces
+            Shop Embroidered Pieces
           </Link>
         </div>
       </section>
@@ -499,7 +499,7 @@ function HomePage({ featuredProducts }) {
       <section className="home-featured section-cream" aria-labelledby="home-featured-title">
         <div className="home-featured-heading">
           <p className="eyebrow dark">Featured Products</p>
-          <h2 id="home-featured-title">Favorite pieces for favorite pets.</h2>
+          <h2 id="home-featured-title">Keep your pet close to your heart.</h2>
           <Link className="shop-all-link" to="/shop">
             Shop All
           </Link>
