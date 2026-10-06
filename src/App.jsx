@@ -324,10 +324,38 @@ export default function App() {
             {subscribed && <span className="success">You are on the list.</span>}
           </form>
           <div className="socials" aria-label="Social links">
-            <a href="#top">IG</a>
-            <a href="#top">FB</a>
-            <a href="#top">TT</a>
-            <a href="#top">Mail</a>
+            <a
+              href="https://www.instagram.com/the.paw.patch/"
+              aria-label="Instagram"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="3" width="18" height="18" rx="5" />
+                <circle cx="12" cy="12" r="4" />
+                <circle cx="17.4" cy="6.6" r="1.1" />
+              </svg>
+            </a>
+            <a
+              href="https://www.facebook.com/profile.php?id=100084136454834"
+              aria-label="Facebook"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M14.2 8.1h2.6V4.3c-.5-.1-2-.3-3.7-.3-3.6 0-6 2.2-6 6.2v3.5H3v4.2h4.1V24h4.9v-6.1h4.1l.7-4.2H12v-3c0-1.2.4-2.6 2.2-2.6Z" />
+              </svg>
+            </a>
+            <a
+              href="https://www.tiktok.com/@the.paw.patch"
+              aria-label="TikTok"
+            >
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M15.4 2c.4 3.2 2.2 5.1 5.2 5.3v4.2a8.9 8.9 0 0 1-5.1-1.6v6.9c0 4.4-3.5 7.2-7.5 5.8-6.4-2.2-4.3-11.7 2.1-12.1.6 0 1.1 0 1.7.1v4.3c-.6-.2-1.1-.3-1.7-.2-3.1.2-3.4 4.8-.5 5.3 1.9.3 3.4-1 3.4-3.5V2h2.4Z" />
+              </svg>
+            </a>
+            <a href="mailto:the.paw.patch.shop@gmail.com" aria-label="Email">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <rect x="3" y="5" width="18" height="14" rx="1.8" />
+                <path d="m4.5 7 7.5 6 7.5-6" />
+              </svg>
+            </a>
           </div>
         </div>
       </footer>

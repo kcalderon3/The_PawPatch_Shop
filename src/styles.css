@@ -84,6 +84,7 @@ nav a,
 }
 
 .brand {
+  color: #fffdf7;
   font-size: 1rem;
   font-weight: 600;
 }
@@ -95,6 +96,7 @@ nav {
 }
 
 nav a {
+  color: #fffdf7;
   font-size: 0.98rem;
   border-bottom: 1px solid transparent;
 }
@@ -379,11 +381,16 @@ h1::after,
 }
 
 .home-product-button {
+  color: #fffdf7;
   align-self: flex-end;
   min-width: 168px;
   margin-top: auto;
   padding: 0 22px;
   font-size: 1rem;
+}
+
+.home-product-copy .home-product-button {
+  color: #fffdf7;
 }
 
 .about-section {
@@ -894,9 +901,9 @@ input[type="email"] {
   text-align: center;
 }
 
-.footer-subscribe-title {
+.footer .footer-subscribe-title {
   margin: 0 0 12px;
-  color: var(--cream);
+  color: rgba(255, 243, 199, 0.78);
   font-family: Georgia, "Times New Roman", serif;
   font-size: clamp(2.4rem, 5vw, 4rem);
   font-weight: 400;
@@ -929,6 +936,27 @@ input[type="email"] {
   text-decoration: none;
   border: 1px solid rgba(255, 243, 199, 0.68);
   border-radius: 50%;
+}
+
+.socials svg {
+  width: 22px;
+  height: 22px;
+}
+
+.socials rect,
+.socials circle,
+.socials path {
+  fill: none;
+  stroke: currentColor;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-width: 2;
+}
+
+.socials a:nth-child(2) path,
+.socials a:nth-child(3) path {
+  fill: currentColor;
+  stroke: none;
 }
 
 .success {
