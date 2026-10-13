@@ -1,6 +1,10 @@
 # The_PawPatch_Shop
 Website for custom embroidered sweaters 
 
+## Wiki
+
+Project documentation lives in [`wiki/Home.md`](./wiki/Home.md).
+
 ## Local development
 
 ```sh
