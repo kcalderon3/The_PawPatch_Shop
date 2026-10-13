@@ -7,162 +7,41 @@ import {
   useLocation,
   useParams,
 } from "react-router-dom";
-
-const products = [
-  {
-    id: "embroidered-hoodie",
-    name: "Embroidered Hoodie",
-    price: 110,
-    category: "Hoodies",
-    images: ["/assets/embroidered-hoodie.jpeg", "/assets/gallery-1.png"],
-    description:
-      "A soft fleece hoodie stitched with a custom portrait of your favorite pet.",
-    colors: ["Blush", "Cream", "Sage", "Charcoal"],
-    sizes: ["XS", "S", "M", "L", "XL", "2XL"],
-    customizable: true,
-  },
-  {
-    id: "embroidered-crewneck",
-    name: "Embroidered Crewneck",
-    price: 100,
-    category: "Crewnecks",
-    images: ["/assets/embroidered-crewneck.jpg", "/assets/gallery-2.png"],
-    description:
-      "A classic crewneck with portrait embroidery placed over the heart.",
-    colors: ["Sky", "Sand", "Ivory", "Olive"],
-    sizes: ["XS", "S", "M", "L", "XL", "2XL"],
-    customizable: true,
-  },
-  {
-    id: "embroidered-sweatsuit",
-    name: "Embroidered Sweatsuit Set",
-    price: 145,
-    category: "Sets",
-    images: ["/assets/embroidered-sweatsuit-set.jpg", "/assets/gallery-3.png"],
-    description:
-      "A matching hoodie and jogger set with a sweet custom pet portrait detail.",
-    colors: ["Buttercream", "Heather", "Rose", "Forest"],
-    sizes: ["XS", "S", "M", "L", "XL"],
-    customizable: true,
-  },
-  {
-    id: "pet-name-add-on",
-    name: "Pet Name Add-On",
-    price: 10,
-    category: "Add-Ons",
-    images: ["/assets/custom-portrait-crew.jpg", "/assets/gallery-4.png"],
-    description:
-      "Warm neutral fleece finished with a detailed thread portrait.",
-    colors: ["Oat", "Mocha", "Pine", "White"],
-    sizes: ["S", "M", "L", "XL"],
-    customizable: true,
-  },
-  {
-    id: "pet-face-add-on",
-    name: "Additional Pet Face Add-On",
-    price: 30,
-    category: "Add-Ons",
-    images: ["/assets/faq-embroidered-frenchies.jpg", "/assets/gallery-5.png"],
-    description:
-      "A relaxed hoodie designed for everyday wear and tiny embroidered tributes.",
-    colors: ["Mint", "Petal", "Cream", "Black"],
-    sizes: ["XS", "S", "M", "L", "XL", "2XL"],
-    customizable: true,
-  },
-  {
-    id: "gift-card",
-    name: "ThePawPatch Gift Card",
-    price: 25,
-    category: "Gifts",
-    images: ["/assets/custom-embroidery-gift-card.jpg"],
-    description:
-      "Give them a head start on their own custom pet portrait piece.",
-    colors: ["Digital"],
-    sizes: ["$25", "$50", "$100", "$150"],
-    customizable: false,
-  },
-];
-
-const galleryImages = [
-  "/assets/gallery-1.png",
-  "/assets/gallery-2.png",
-  "/assets/gallery-3.png",
-  "/assets/gallery-4.png",
-  "/assets/gallery-5.png",
-  "/assets/patch-founder.png",
-];
-
-const faqs = [
-  {
-    question: "What is the average turn around time?",
-    answer:
-      "Turn around time is 4-5 weeks. However, if you need an item sooner, feel free to contact us and we will see what we can do!",
-  },
-  {
-    question: "What is the sizing for sweaters and hoodies?",
-    answer:
-      "For detailed info about sizing and materials refer to sizing chart on product listings. Generally, they are unisex sizing. If you prefer a more snug fit, we recommend sizing down.",
-  },
-  {
-    question: "What brand of sweaters are used?",
-    answer:
-      "We use high quality, mid weight, comfy sweaters and hoodies from Independent Trading Co.",
-  },
-  {
-    question: "What kind of image should I provide for the best quality product?",
-    answer:
-      "We suggest submitting a quality photo with good lighting. Ideally with your pet facing the camera either head on or at a slight angle where both eyes are visible to the camera.",
-  },
-  {
-    question: "Will I get to see the digitalized image before it is embroidered onto the item?",
-    answer:
-      "Yes! We make sure to verify the design with you before we start stitching to ensure you are happy with your purchase!",
-  },
-  {
-    question: "Where do you ship to?",
-    answer:
-      "We ship anywhere in the continental US.",
-  },
-  {
-    question: "How do I care for my sweater?",
-    answer:
-      "We recommend either hand washing or machine washing in cold water on the delicate cycle. Use mild detergent and avoid using bleach or other brightening agents.",
-  },
-  {
-    question: "Should I expect shrinkage from my sweater?",
-    answer:
-      "From our experience we have not seen much if any shrinking in the sweaters used. We recommend following the care guidelines provided on the FAQ page to help increase the longevity of your items.",
-  },
-  {
-    question: "Can I cancel my order?",
-    answer:
-      "We are happy to cancel your order if it is done within 24 hrs of ordering.",
-  },
-  {
-    question: "Do you offer returns?",
-    answer:
-      "Due to the nature of our customized products we are unable to offer returns. However, we work with you every step of the way to ensure your satisfaction with your purchase!",
-  },
-];
+import { fallbackProducts, faqs, galleryImages } from "./data/storefront.js";
+import {
+  browserSupabase,
+  createCheckoutSession,
+  fetchAdminOrders,
+  fetchProducts,
+  subscribeEmail,
+  updateAdminOrder,
+  uploadPetPhoto,
+} from "./lib/api.js";
 
 function formatMoney(value) {
   return `$${value.toFixed(2)}`;
 }
 
 export default function App() {
-  const [selectedProduct, setSelectedProduct] = useState(products[0]);
-  const [activeImage, setActiveImage] = useState(products[0].images[0]);
-  const [selectedColor, setSelectedColor] = useState(products[0].colors[0]);
-  const [selectedSize, setSelectedSize] = useState(products[0].sizes[1]);
+  const [products, setProducts] = useState(fallbackProducts);
+  const [productLoadError, setProductLoadError] = useState("");
+  const [selectedProduct, setSelectedProduct] = useState(fallbackProducts[0]);
+  const [activeImage, setActiveImage] = useState(fallbackProducts[0].images[0]);
+  const [selectedColor, setSelectedColor] = useState(fallbackProducts[0].colors[0]);
+  const [selectedSize, setSelectedSize] = useState(fallbackProducts[0].sizes[1]);
   const [quantity, setQuantity] = useState(1);
   const [petPhoto, setPetPhoto] = useState(null);
   const [cart, setCart] = useState([]);
   const [cartOpen, setCartOpen] = useState(false);
   const [productError, setProductError] = useState("");
+  const [checkoutError, setCheckoutError] = useState("");
+  const [checkoutProcessing, setCheckoutProcessing] = useState(false);
+  const [addingToCart, setAddingToCart] = useState(false);
   const [openFaq, setOpenFaq] = useState(0);
   const [galleryIndex, setGalleryIndex] = useState(null);
   const [checkoutComplete, setCheckoutComplete] = useState(false);
   const [email, setEmail] = useState("");
+  const [subscribeError, setSubscribeError] = useState("");
   const [subscribed, setSubscribed] = useState(false);
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -171,7 +50,30 @@ export default function App() {
     0,
   );
 
-  const featuredProducts = useMemo(() => products, []);
+  const featuredProducts = useMemo(() => products, [products]);
+
+  useEffect(() => {
+    let ignore = false;
+
+    fetchProducts()
+      .then((nextProducts) => {
+        if (ignore || !nextProducts?.length) return;
+        setProducts(nextProducts);
+        setSelectedProduct(nextProducts[0]);
+        setActiveImage(nextProducts[0].images[0]);
+        setSelectedColor(nextProducts[0].colors[0]);
+        setSelectedSize(nextProducts[0].sizes[Math.min(1, nextProducts[0].sizes.length - 1)]);
+      })
+      .catch((error) => {
+        if (!ignore) {
+          setProductLoadError(error.message);
+        }
+      });
+
+    return () => {
+      ignore = true;
+    };
+  }, []);
 
   const resetOrderForProduct = useCallback((product) => {
     setSelectedProduct(product);
@@ -183,7 +85,7 @@ export default function App() {
     setProductError("");
   }, []);
 
-  function addToCart(product = selectedProduct, color = selectedColor, size = selectedSize) {
+  async function addToCart(product = selectedProduct, color = selectedColor, size = selectedSize) {
     if (!color || !size) {
       setProductError("Choose a color and size first.");
       return;
@@ -194,8 +96,21 @@ export default function App() {
       return;
     }
 
+    setAddingToCart(true);
+    setProductError("");
+
+    let uploadedPhoto = null;
+
+    try {
+      uploadedPhoto = petPhoto ? await uploadPetPhoto(petPhoto) : null;
+    } catch (error) {
+      setProductError(error.message || "Photo upload failed. Please try again.");
+      setAddingToCart(false);
+      return;
+    }
+
     const item = {
-      lineId: `${product.id}-${color}-${size}-${petPhoto?.name || "none"}-${Date.now()}`,
+      lineId: `${product.id}-${color}-${size}-${uploadedPhoto?.name || "none"}-${Date.now()}`,
       productId: product.id,
       name: product.name,
       price: product.price,
@@ -203,15 +118,14 @@ export default function App() {
       color,
       size,
       image: product.images[0],
-      petPhoto: petPhoto
-        ? { name: petPhoto.name, size: petPhoto.size, type: petPhoto.type }
-        : null,
+      petPhoto: uploadedPhoto,
     };
 
     setCart((current) => [...current, item]);
     setCartOpen(true);
     setCheckoutComplete(false);
     setProductError("");
+    setAddingToCart(false);
   }
 
   function updateCartQuantity(lineId, nextQuantity) {
@@ -227,16 +141,44 @@ export default function App() {
     );
   }
 
-  function handleCheckout() {
+  async function handleCheckout() {
     if (!cart.length) return;
-    setCheckoutComplete(true);
+
+    setCheckoutProcessing(true);
+    setCheckoutError("");
+
+    try {
+      const payload = await createCheckoutSession(cart);
+
+      if (payload.url) {
+        window.location.assign(payload.url);
+        return;
+      }
+
+      setCheckoutComplete(true);
+    } catch (error) {
+      setCheckoutError(
+        error.message ||
+          "Checkout is not configured yet. Add Stripe and Supabase environment variables to enable payment.",
+      );
+    } finally {
+      setCheckoutProcessing(false);
+    }
   }
 
-  function handleSubscribe(event) {
+  async function handleSubscribe(event) {
     event.preventDefault();
     if (!email.trim()) return;
-    setSubscribed(true);
-    setEmail("");
+
+    setSubscribeError("");
+
+    try {
+      await subscribeEmail(email.trim());
+      setSubscribed(true);
+      setEmail("");
+    } catch (error) {
+      setSubscribeError(error.message || "Could not subscribe right now.");
+    }
   }
 
   return (
@@ -248,7 +190,10 @@ export default function App() {
         <Route
           path="/"
           element={
-            <HomePage featuredProducts={featuredProducts} />
+            <HomePage
+              featuredProducts={featuredProducts}
+              productLoadError={productLoadError}
+            />
           }
         />
         <Route
@@ -261,6 +206,7 @@ export default function App() {
             <ProductPage
               activeImage={activeImage}
               addToCart={addToCart}
+              addingToCart={addingToCart}
               petPhoto={petPhoto}
               productError={productError}
               products={products}
@@ -277,6 +223,9 @@ export default function App() {
             />
           }
         />
+        <Route path="/checkout/success" element={<CheckoutResult status="success" />} />
+        <Route path="/checkout/cancel" element={<CheckoutResult status="cancel" />} />
+        <Route path="/admin" element={<AdminPage />} />
         <Route
           path="/gallery"
           element={
@@ -322,6 +271,7 @@ export default function App() {
             />
             <button className="secondary-button">Sign Up</button>
             {subscribed && <span className="success">You are on the list.</span>}
+            {subscribeError && <span className="form-error">{subscribeError}</span>}
           </form>
           <div className="socials" aria-label="Social links">
             <a
@@ -415,14 +365,16 @@ export default function App() {
               <button
                 className="primary-button"
                 data-testid="checkout"
+                disabled={checkoutProcessing || !cart.length}
                 onClick={handleCheckout}
               >
-                Checkout
+                {checkoutProcessing ? "Opening Checkout..." : "Checkout"}
               </button>
-              <p>Mock checkout only. No payment will be processed.</p>
+              <p>Secure checkout is powered by Stripe when backend keys are configured.</p>
+              {checkoutError && <p className="form-error">{checkoutError}</p>}
               {checkoutComplete && (
                 <p className="success">
-                  Order preview created. Live payment can be connected later.
+                  Checkout preview created. Add Stripe and Supabase environment variables to accept payment.
                 </p>
               )}
             </div>
@@ -506,7 +458,7 @@ function SiteHeader({ cartCount, onCartOpen }) {
   );
 }
 
-function HomePage({ featuredProducts }) {
+function HomePage({ featuredProducts, productLoadError }) {
   const homeProducts = featuredProducts.slice(0, 3);
 
   return (
@@ -528,6 +480,11 @@ function HomePage({ featuredProducts }) {
         <div className="home-featured-heading">
           <p className="eyebrow dark">Featured Products</p>
           <h2 id="home-featured-title">Keep your pet close to your heart.</h2>
+          {productLoadError && (
+            <p className="backend-note">
+              Showing local products while the backend catalog is unavailable.
+            </p>
+          )}
           <Link className="shop-all-link" to="/shop">
             Shop All
           </Link>
@@ -640,6 +597,7 @@ function ShopPage({ featuredProducts }) {
 function ProductPage({
   activeImage,
   addToCart,
+  addingToCart,
   petPhoto,
   productError,
   products,
@@ -780,9 +738,10 @@ function ProductPage({
             <button
               className="primary-button"
               data-testid="add-to-cart"
+              disabled={addingToCart}
               onClick={() => addToCart(product, currentColor, currentSize)}
             >
-              Add To Cart
+              {addingToCart ? "Uploading..." : "Add To Cart"}
             </button>
           </div>
           {productError && <p className="form-error">{productError}</p>}
@@ -861,6 +820,217 @@ function FaqPage({ faqs, openFaq, setOpenFaq }) {
             ))}
           </div>
         </div>
+      </section>
+    </main>
+  );
+}
+
+function CheckoutResult({ status }) {
+  const isSuccess = status === "success";
+
+  return (
+    <main id="top" className="checkout-result">
+      <section className="section section-cream product-not-found">
+        <p className="eyebrow dark">{isSuccess ? "Order received" : "Checkout paused"}</p>
+        <h1>
+          {isSuccess ? "Thank you!" : "No worries."}
+          <span>{isSuccess ? "We got your order." : "Your cart is safe."}</span>
+        </h1>
+        <p className="description">
+          {isSuccess
+            ? "Stripe will send your receipt. We will review your uploaded pet photo and follow up before stitching."
+            : "You can return to the shop whenever you are ready to finish your custom order."}
+        </p>
+        <Link className="primary-link" to="/shop">
+          Back to shop
+        </Link>
+      </section>
+    </main>
+  );
+}
+
+function AdminPage() {
+  const [adminEmail, setAdminEmail] = useState("");
+  const [session, setSession] = useState(null);
+  const [orders, setOrders] = useState([]);
+  const [adminMessage, setAdminMessage] = useState("");
+  const [adminError, setAdminError] = useState("");
+  const [loadingOrders, setLoadingOrders] = useState(false);
+
+  useEffect(() => {
+    if (!browserSupabase) return;
+
+    browserSupabase.auth.getSession().then(({ data }) => {
+      setSession(data.session || null);
+    });
+
+    const { data: listener } = browserSupabase.auth.onAuthStateChange(
+      (_event, nextSession) => {
+        setSession(nextSession);
+      },
+    );
+
+    return () => listener.subscription.unsubscribe();
+  }, []);
+
+  const loadOrders = useCallback(async () => {
+    if (!session?.access_token) return;
+
+    setLoadingOrders(true);
+    setAdminError("");
+
+    try {
+      const payload = await fetchAdminOrders(session.access_token);
+      setOrders(payload.orders || []);
+    } catch (error) {
+      setAdminError(error.message || "Could not load orders.");
+    } finally {
+      setLoadingOrders(false);
+    }
+  }, [session]);
+
+  useEffect(() => {
+    loadOrders();
+  }, [loadOrders]);
+
+  async function requestMagicLink(event) {
+    event.preventDefault();
+    setAdminMessage("");
+    setAdminError("");
+
+    if (!browserSupabase) {
+      setAdminError("Add VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY to enable admin login.");
+      return;
+    }
+
+    const { error } = await browserSupabase.auth.signInWithOtp({
+      email: adminEmail,
+      options: { emailRedirectTo: `${window.location.origin}/admin` },
+    });
+
+    if (error) {
+      setAdminError(error.message);
+      return;
+    }
+
+    setAdminMessage("Check your email for the admin sign-in link.");
+  }
+
+  async function updateOrder(orderId, changes) {
+    if (!session?.access_token) return;
+
+    setAdminError("");
+
+    try {
+      await updateAdminOrder(session.access_token, orderId, changes);
+      await loadOrders();
+    } catch (error) {
+      setAdminError(error.message || "Could not update order.");
+    }
+  }
+
+  return (
+    <main id="top" className="admin-page">
+      <section className="admin-hero">
+        <p className="eyebrow">Private dashboard</p>
+        <h1>
+          Order
+          <span>Admin</span>
+        </h1>
+      </section>
+
+      <section className="admin-panel">
+        {!session ? (
+          <form className="admin-login" onSubmit={requestMagicLink}>
+            <h2>Sign in with your admin email.</h2>
+            <label>
+              Email
+              <input
+                type="email"
+                value={adminEmail}
+                onChange={(event) => setAdminEmail(event.target.value)}
+                placeholder="you@example.com"
+              />
+            </label>
+            <button className="primary-button">Send magic link</button>
+            {adminMessage && <p className="success">{adminMessage}</p>}
+            {adminError && <p className="form-error">{adminError}</p>}
+          </form>
+        ) : (
+          <>
+            <div className="admin-toolbar">
+              <div>
+                <p className="eyebrow dark">Signed in</p>
+                <h2>{session.user.email}</h2>
+              </div>
+              <div className="admin-actions">
+                <button className="secondary-button" onClick={loadOrders}>
+                  {loadingOrders ? "Refreshing..." : "Refresh"}
+                </button>
+                <button
+                  className="secondary-button"
+                  onClick={() => browserSupabase.auth.signOut()}
+                >
+                  Sign out
+                </button>
+              </div>
+            </div>
+            {adminError && <p className="form-error">{adminError}</p>}
+            {!orders.length ? (
+              <p className="empty-cart">
+                {loadingOrders ? "Loading orders..." : "No live orders yet."}
+              </p>
+            ) : (
+              <div className="admin-orders">
+                {orders.map((order) => (
+                  <article className="admin-order" key={order.id}>
+                    <div>
+                      <p className="eyebrow dark">{order.status}</p>
+                      <h3>{order.customer_email || "Guest customer"}</h3>
+                      <p>{formatMoney((order.total_cents || 0) / 100)}</p>
+                      {order.shipping_state && (
+                        <p>
+                          Ship to {order.shipping_state}
+                          {["AK", "HI", "PR", "GU", "VI", "AS", "MP"].includes(
+                            order.shipping_state,
+                          ) && " - review non-continental destination"}
+                        </p>
+                      )}
+                    </div>
+                    <label>
+                      Fulfillment status
+                      <select
+                        value={order.fulfillment_status || "needs_review"}
+                        onChange={(event) =>
+                          updateOrder(order.id, {
+                            fulfillment_status: event.target.value,
+                          })
+                        }
+                      >
+                        <option value="needs_review">Needs review</option>
+                        <option value="design_sent">Design sent</option>
+                        <option value="approved">Approved</option>
+                        <option value="in_production">In production</option>
+                        <option value="shipped">Shipped</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="refunded">Refunded</option>
+                      </select>
+                    </label>
+                    <label>
+                      Admin notes
+                      <textarea
+                        defaultValue={order.admin_notes || ""}
+                        onBlur={(event) =>
+                          updateOrder(order.id, { admin_notes: event.target.value })
+                        }
+                      />
+                    </label>
+                  </article>
+                ))}
+              </div>
+            )}
+          </>
+        )}
       </section>
     </main>
   );
